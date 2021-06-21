@@ -1,0 +1,17 @@
+{
+  "name": "gatways_mongo",
+  "version": "1.0.0",
+  "description": "APIs project using NodeJs, express and mongodb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "a.rahman1783@yahoo.com",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.14"
+  }
+}
