@@ -20,11 +20,14 @@ router.route("/").get((req, res) => {
 
 router.route("/:id").get((req, res) => {
   const id = req.params.id;
+  console.log(id)
   GatewaysModel.findById(id)
     .then((gateway) =>
       res.json({
         ...gateway,
-        devices: PeripheralModel.find().then((peripherals) => peripherals.filter((peripheral) => String(peripheral.gateway) === String(gateway.serialNo))),
+        devices: PeripheralModel.find()
+                        .then((peripherals) => 
+                        peripherals.filter((peripheral) => String(peripheral.gateway) === String(gateway.serialNo))),
       })
     )
     .catch((err) => res.status(400).json(`Error: ${err}`));
