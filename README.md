@@ -16,7 +16,7 @@ This information must be stored in Mongodb collections
 
 ### Project running
         • Clone this repo using `git clone https://github.com/arahman1983/gatway_mongo.git`
-        • Install dependancies using `npm i`
+        • Install dependencies using `npm i`
         • Run the project using `npm start`
         
 ### Change DB
