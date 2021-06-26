@@ -7,8 +7,8 @@ const router = express.Router();
 
 router.route("/").get((req, res) => {
   GatewaysModel.find()
-    .then((res) => {
-      res.json( res.data );
+    .then((gateways) => {
+      res.json( gateways );
     })
     .catch((err) => res.status(400).json(`Error: ${err}`));
 });
@@ -17,8 +17,8 @@ router.route("/:id").get((req, res) => {
   const id = req.params.id;
   console.log(id)
   GatewaysModel.findById(id)
-    .then((res) =>
-      res.json(res.data )
+    .then((gateways) =>
+      res.json(gateways)
     )
     .catch((err) => res.status(400).json(`Error: ${err}`));
 });
