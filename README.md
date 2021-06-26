@@ -21,5 +21,19 @@ This information must be stored in Mongodb collections
         
 ### Change DB
         • you can use your own db by change .env file params ATLAS_URI
-        
-#### the project demo is running on this [link]() 
+
+### Test APIs
+        this app have two main routes :
+        ``/gateways``
+        - "/" method get : to get all gateways
+        - "/add" method post: to add new gateway with required fields in body (serialNo:string, name:string, api:string)
+        - "/update/:id" method put: to update specific gateway with required fields in body (serialNo:string, name:string, api:string) and id as params
+        - "/:id" method delete: to delete specific gateway with id in params
+
+        ``/peripheral``
+        - "/" method get : to get all devices
+        - "/add" method post: to add new device with required fields in body (vendor:string, UID:number, status:boolean)
+        - "/update/:id" method put: to update specific device with required fields in body (vendor:string, UID:number, status:boolean) and id as params
+        - "/:id" method delete: to delete specific device with id in params
+
+##### the project demo is running on this [link](https://gatewayapis.herokuapp.com) 
