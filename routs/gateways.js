@@ -7,13 +7,8 @@ const router = express.Router();
 
 router.route("/").get((req, res) => {
   GatewaysModel.find()
-    .then((gateways) => {
-      res.json(
-        gateways.map((gateway) => ({
-          ...gateway,
-          devices: PeripheralModel.find().then((peripherals) => peripherals.filter((peripheral) => String(peripheral.gateway) === String(gateway.serialNo))),
-        }))
-      );
+    .then((res) => {
+      res.json( res.data );
     })
     .catch((err) => res.status(400).json(`Error: ${err}`));
 });
@@ -22,13 +17,8 @@ router.route("/:id").get((req, res) => {
   const id = req.params.id;
   console.log(id)
   GatewaysModel.findById(id)
-    .then((gateway) =>
-      res.json({
-        ...gateway,
-        devices: PeripheralModel.find()
-                        .then((peripherals) => 
-                        peripherals.filter((peripheral) => String(peripheral.gateway) === String(gateway.serialNo))),
-      })
+    .then((res) =>
+      res.json(res.data )
     )
     .catch((err) => res.status(400).json(`Error: ${err}`));
 });
@@ -36,8 +26,8 @@ router.route("/:id").get((req, res) => {
 router.route("/:id").delete((req, res) => {
   const id = req.params.id;
   const serialNo = req.body.serialNo;
-  const devices = PeripheralModel.find().then((peripherals) => peripherals.filter((peripheral) => String(peripheral.gateway) === String(serialNo)));
-  if (devices.length > 0) {
+  const devices = PeripheralModel.find().then((res) => res.data.filter((peripheral) => String(peripheral.gateway) === String(id)));
+  if ( typeof devices === Array && devices.length > 0) {
     return res.status(400).json(`Error: You can't delete this gateway because it is connected with peripheral devices`);
   } else {
     GatewaysModel.findByIdAndRemove(id)
@@ -48,13 +38,15 @@ router.route("/:id").delete((req, res) => {
 
 router.route("/update/:id").put((req, res) => {
   const id = req.params.id;
-  const newGateway = req.body;
-  GatewaysModel.findByIdAndUpdate(id)
-    .then((gateway) => {
-      gateway.serialNo = newGateway.serialNo;
-      gateway.name = newGateway.name;
-      gateway.IPv4 = newGateway.IPv4;
-    })
+  GatewaysModel.findByIdAndUpdate({_id: id},{$set:
+    {
+      serialNo : req.body.serialNo,
+      name : req.body.name,
+      IPv4 : req.body.IPv4
+    }
+  })
+    .then((docs) => res.json(docs)
+    )
     .catch((err) => res.status(400).json(`Error: ${err}`));
 });
 
@@ -63,7 +55,7 @@ router.route("/add").post((req, res) => {
   const name = req.body.name;
   const IPv4 = req.body.IPv4;
   // const devices = req.body.devices;
-  const newGateway = new GatewaysModel({ serialNo, name, IPv4, newGateway });
+  const newGateway = new GatewaysModel({ serialNo, name, IPv4 });
   newGateway
     .save()
     .then(() => res.json(`New Gateway with IP: ${IPv4} Added`))

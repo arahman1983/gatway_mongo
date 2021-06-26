@@ -34,30 +34,29 @@ router.route("/:id").delete((req, res) => {
 router.route("/update/:id").put((req, res) => {
   const id = req.params.id
   const vendor = req.body.vendor
-  const dateCreated = req.body.dateCreated
   const status = req.body.status
   const gateway = req.body.gateway
   
   PeripheralModel
-    .findByIdAndUpdate(id)
-    .then((device) => {
-      device.vendor = vendor
-      device.dateCreated = dateCreated
-      device.status = status
-      device.gateway = gateway
+    .findByIdAndUpdate({_id: id},{$set:
+      {
+        vendor,
+        status,
+        gateway
+      }
     })
+      .then((docs) =>res.json(docs))
     .catch((err) => res.status(400).json(`Error: ${err}`));
 });
 
 
 router.route("/add").post((req, res) => {
-
+  const UID = req.body.UID
   const vendor = req.body.vendor
-  const dateCreated = req.body.dateCreated
   const status = req.body.status
   const gateway = req.body.gateway
   
-  const newDevice = new GatewaysModel({ vendor, dateCreated, status, gateway });
+  const newDevice = new PeripheralModel({ UID, vendor, status, gateway });
   newDevice
     .save()
     .then(() => res.json(`New Device added to the gateway ${gateway} Added`))
